@@ -184,48 +184,17 @@ public class Model {
     }
 
     // Retrieve patient details from the DataFrame
-    String id = dataFrame.getValue("ID", rowIndex);
-    String firstName = removeDigits(dataFrame.getValue("FIRST", rowIndex));
-    String lastName = removeDigits(dataFrame.getValue("LAST", rowIndex));
-    String birthDate = dataFrame.getValue("BIRTHDATE", rowIndex);
-    String deathDate = dataFrame.getValue("DEATHDATE", rowIndex);
-    String gender = dataFrame.getValue("GENDER", rowIndex);
-    String address = dataFrame.getValue("ADDRESS", rowIndex);
-    String city = dataFrame.getValue("CITY", rowIndex);
-    String state = dataFrame.getValue("STATE", rowIndex);
-    String zip = dataFrame.getValue("ZIP", rowIndex);
-    String ssn = dataFrame.getValue("SSN", rowIndex);
-    String drivers = dataFrame.getValue("DRIVERS", rowIndex);
-    String passport = dataFrame.getValue("PASSPORT", rowIndex);
-    String prefix = dataFrame.getValue("PREFIX", rowIndex);
-    String suffix = dataFrame.getValue("SUFFIX", rowIndex);
-    String maiden = removeDigits(dataFrame.getValue("MAIDEN", rowIndex));
-    String marital = dataFrame.getValue("MARITAL", rowIndex);
-    String race = dataFrame.getValue("RACE", rowIndex);
-    String ethnicity = dataFrame.getValue("ETHNICITY", rowIndex);
-    String birthPlace = dataFrame.getValue("BIRTHPLACE", rowIndex);
+    StringBuilder patientDetails = new StringBuilder();
 
-    // Format patient details into a string
-    return "ID: " + id + "<br>" +
-            "Prefix: " + prefix + "<br>" +
-            "First Name: " + firstName + "<br>" +
-            "Last Name: " + lastName + "<br>" +
-            "Maiden Name: " + maiden + "<br>" +
-            "Birth Date: " + birthDate + "<br>" +
-            "Death Date: " + deathDate + "<br>" +
-            "Gender: " + gender + "<br>" +
-            "Address: " + address + "<br>" +
-            "City: " + city + "<br>" +
-            "State: " + state + "<br>" +
-            "ZIP: " + zip + "<br>" +
-            "SSN: " + ssn + "<br>" +
-            "Drivers: " + drivers + "<br>" +
-            "Passport: " + passport + "<br>" +
-            "Suffix: " + suffix + "<br>" +
-            "Marital: " + marital + "<br>" +
-            "Race: " + race + "<br>" +
-            "Ethnicity: " + ethnicity + "<br>" +
-            "Birth Place: " + birthPlace;
+    List<String> columnNames = dataFrame.getColumnNames();
+    for (String columnName : columnNames) {
+      String value = dataFrame.getValue(columnName, rowIndex);
+      if (columnName.equals("FIRST")  || columnName.equals("LAST"))
+        value = removeDigits(value);
+      patientDetails.append(columnName).append(": ").append(value).append("<br>");
+    }
+
+    return patientDetails.toString();
   }
 
 
