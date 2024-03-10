@@ -14,18 +14,18 @@
     List<String> patients = (List<String>) request.getAttribute("result");
     if (patients.size() !=0)
     {
+  %>
+  <ul>
+    <%
+      for (String patient : patients)
+      {
     %>
-    <ul>
-      <%
-        for (String patient : patients)
-        {
-      %>
-      <li><%=patient%></li>
-     <% }
+    <li><%=patient%></li>
+    <% }
     } else
     {%>
-      <p>Nothing found</p>
-  <%}%>
+    <p>Nothing found</p>
+    <%}%>
   </ul>
 </div>
 <jsp:include page="/footer.jsp"/>

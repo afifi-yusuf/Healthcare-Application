@@ -15,7 +15,8 @@
       List<String> patients = (List<String>) request.getAttribute("patientNames");
       for (String patient : patients)
       {
-        String href = "dummypage.html";
+        //String patientId = "123"; // Get patient ID dynamically
+        String href = "patientDetails?patient=" + patient; // Update to servlet URL
     %>
     <li><a href="<%=href%>"><%=patient%></a>
     </li>
