@@ -29,4 +29,5 @@ public class PatientDetailsServlet extends HttpServlet {
         RequestDispatcher dispatch = context.getRequestDispatcher("/patientDetails.jsp");
         dispatch.forward(request, response);
     }
+
 }

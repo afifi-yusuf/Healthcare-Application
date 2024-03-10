@@ -184,6 +184,7 @@ public class Model {
     }
 
     // Retrieve patient details from the DataFrame
+    String id = dataFrame.getValue("ID", rowIndex);
     String firstName = removeDigits(dataFrame.getValue("FIRST", rowIndex));
     String lastName = removeDigits(dataFrame.getValue("LAST", rowIndex));
     String birthDate = dataFrame.getValue("BIRTHDATE", rowIndex);
@@ -205,7 +206,8 @@ public class Model {
     String birthPlace = dataFrame.getValue("BIRTHPLACE", rowIndex);
 
     // Format patient details into a string
-    return "Prefix: " + prefix + "<br>" +
+    return "ID: " + id + "<br>" +
+            "Prefix: " + prefix + "<br>" +
             "First Name: " + firstName + "<br>" +
             "Last Name: " + lastName + "<br>" +
             "Maiden Name: " + maiden + "<br>" +
@@ -225,6 +227,8 @@ public class Model {
             "Ethnicity: " + ethnicity + "<br>" +
             "Birth Place: " + birthPlace;
   }
+
+
 
   public String getPatientId(String fullName) {
     if (dataFrame == null) {
@@ -255,6 +259,7 @@ public class Model {
 
     return "Patient not found.";
   }
+
 
   public void addPatient(String... patientDetails) {
     // Check if the DataFrame is initialized

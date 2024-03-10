@@ -22,12 +22,6 @@ public class StateServlet extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        // Use the model to do the search and put the results into the request object sent to the
-        // Java Server Page used to display the results.
-        Model model = ModelFactory.getModel();
-        String searchResult = model.getPeopleInCity(request.getParameter("searchstring"));
-        request.setAttribute("result", searchResult);
-
         // Invoke the JSP page.
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/stateSearch.jsp");

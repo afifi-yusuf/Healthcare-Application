@@ -17,15 +17,15 @@ import java.util.List;
 // The servlet invoked to perform a search.
 // The url http://localhost:8080/runsearch.html is mapped to calling doPost on the servlet object.
 // The servlet object is created automatically, you just provide the class.
-@WebServlet("/searchCity.html")
-public class CityServlet extends HttpServlet
+@WebServlet("/idfind.html")
+public class IdFindServlet extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
 
         // Invoke the JSP page.
         ServletContext context = getServletContext();
-        RequestDispatcher dispatch = context.getRequestDispatcher("/citySearch.jsp");
+        RequestDispatcher dispatch = context.getRequestDispatcher("/idSearch.jsp");
         dispatch.forward(request, response);
     }
 
