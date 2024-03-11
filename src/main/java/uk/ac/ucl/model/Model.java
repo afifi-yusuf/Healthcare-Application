@@ -23,8 +23,8 @@ public class Model {
   }
   public List<String> getPatientNames()
   {
-    Column firstname = dataFrame.getColumn("FIRST");
-    Column lastname = dataFrame.getColumn("LAST");
+    Column firstname = this.dataFrame.getColumn("FIRST");
+    Column lastname = this.dataFrame.getColumn("LAST");
     List<String> patientNames = new ArrayList<>();
     for (int i = 0; i < firstname.getSize(); i++)
     {
@@ -56,9 +56,9 @@ public class Model {
     List<String> searchResults = new ArrayList<>();
 
     // Iterate through the data frame and search for the keyword
-    for (String columnName : dataFrame.getColumnNames()) {
-      for (int i = 0; i < dataFrame.getRowCount(); i++) {
-        String value = dataFrame.getValue(columnName, i);
+    for (String columnName : this.dataFrame.getColumnNames()) {
+      for (int i = 0; i < this.dataFrame.getRowCount(); i++) {
+        String value = this.dataFrame.getValue(columnName, i);
         if (value.contains(keyword)) {
           searchResults.add(value);
         }
@@ -68,14 +68,14 @@ public class Model {
     return searchResults;
   }
   public String findOldestPerson() {
-    if (dataFrame == null) {
+    if (this.dataFrame == null) {
       return "No data available.";
     }
 
-    Column birthdateColumn = dataFrame.getColumn("BIRTHDATE");
-    Column deathdateColumn = dataFrame.getColumn("DEATHDATE");
-    Column firstNameColumn = dataFrame.getColumn("FIRST");
-    Column lastNameColumn = dataFrame.getColumn("LAST");
+    Column birthdateColumn = this.dataFrame.getColumn("BIRTHDATE");
+    Column deathdateColumn = this.dataFrame.getColumn("DEATHDATE");
+    Column firstNameColumn = this.dataFrame.getColumn("FIRST");
+    Column lastNameColumn = this.dataFrame.getColumn("LAST");
 
     if (birthdateColumn == null || firstNameColumn == null || lastNameColumn == null || deathdateColumn == null) {
       return "One or more required columns not found.";
@@ -122,13 +122,13 @@ public class Model {
   }
 
   public String getPeopleInArea(String area, String type){
-    if (dataFrame == null) {
+    if (this.dataFrame == null) {
       return "No data available.";
     }
 
-    Column areaColumn = dataFrame.getColumn(type);
-    Column firstNameColumn = dataFrame.getColumn("FIRST");
-    Column lastNameColumn = dataFrame.getColumn("LAST");
+    Column areaColumn = this.dataFrame.getColumn(type);
+    Column firstNameColumn = this.dataFrame.getColumn("FIRST");
+    Column lastNameColumn = this.dataFrame.getColumn("LAST");
 
     if (areaColumn == null || firstNameColumn == null || lastNameColumn == null) {
       return "One or more required columns not found.";
@@ -165,12 +165,12 @@ public class Model {
   }
 
   public String displayPatientDetails(String patientId) {
-    if (dataFrame == null) {
+    if (this.dataFrame == null) {
       return "No data available.";
     }
 
     // Find the index of the patient with the given ID
-    Column idColumn = dataFrame.getColumn("ID");
+    Column idColumn = this.dataFrame.getColumn("ID");
     int rowIndex = -1;
     for (int i = 0; i < idColumn.getSize(); i++) {
       if (idColumn.getRowValue(i).equals(patientId)) {
@@ -186,9 +186,12 @@ public class Model {
     // Retrieve patient details from the DataFrame
     StringBuilder patientDetails = new StringBuilder();
 
-    List<String> columnNames = dataFrame.getColumnNames();
+    List<String> columnNames = this.dataFrame.getColumnNames();
     for (String columnName : columnNames) {
-      String value = dataFrame.getValue(columnName, rowIndex);
+      if (rowIndex >= this.dataFrame.getColumn(columnName).getSize() || this.dataFrame.getColumn(columnName).getRowValue(rowIndex).isEmpty()) {
+        continue;
+      }
+      String value = this.dataFrame.getValue(columnName, rowIndex);
       if (columnName.equals("FIRST")  || columnName.equals("LAST"))
         value = removeDigits(value);
       patientDetails.append(columnName).append(": ").append(value).append("<br>");
@@ -200,13 +203,13 @@ public class Model {
 
 
   public String getPatientId(String fullName) {
-    if (dataFrame == null) {
+    if (this.dataFrame == null) {
       return "No data available.";
     }
 
-    Column idColumn = dataFrame.getColumn("ID");
-    Column firstNameColumn = dataFrame.getColumn("FIRST");
-    Column lastNameColumn = dataFrame.getColumn("LAST");
+    Column idColumn = this.dataFrame.getColumn("ID");
+    Column firstNameColumn = this.dataFrame.getColumn("FIRST");
+    Column lastNameColumn = this.dataFrame.getColumn("LAST");
 
     if (idColumn == null || firstNameColumn == null || lastNameColumn == null) {
       return "One or more required columns not found.";
@@ -241,13 +244,13 @@ public class Model {
     String[] columnNames = {"ID", "FIRST", "LAST", "BIRTHDATE", "DEATHDATE", "SSN", "DRIVERS", "PASSPORT", "PREFIX", "SUFFIX", "MAIDEN", "MARITAL", "RACE", "ETHNICITY", "GENDER", "BIRTHPLACE", "ADDRESS", "CITY", "STATE", "ZIP"};
 
     // Check if the number of patient details matches the number of columns
-    /*
+
     if (patientDetails.length != columnNames.length) {
       // Handle the case where the number of details does not match
       return patientDetails.length  + " " +columnNames.length +
               " Number of patient details does not match the number of columns.\n";
     }
-    */
+
 
 
     // Iterate over each patient detail and add it to the respective column

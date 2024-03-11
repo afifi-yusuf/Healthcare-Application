@@ -38,6 +38,7 @@ public class AddResultServlet extends HttpServlet
         String marital = request.getParameter("marital");
         String race = request.getParameter("race");
         String ethnicity = request.getParameter("ethnicity");
+        String gender = request.getParameter("gender");
         String birthplace = request.getParameter("birthplace");
         String address = request.getParameter("address");
         String city = request.getParameter("city");
@@ -46,7 +47,7 @@ public class AddResultServlet extends HttpServlet
 
         // Call the addPatient method in your model to add the new patient
         Model model = ModelFactory.getModel();
-        String searchresult = model.addPatient(id, firstName, lastName, dob, dod, ssn, drivers, passport, prefix, suffix, maiden, marital, race, ethnicity, birthplace, address, city, state, zip);
+        String searchresult = model.addPatient(id, firstName, lastName, dob, dod, ssn, drivers, passport, prefix, suffix, maiden, marital, race, ethnicity, gender, birthplace, address, city, state, zip);
 
         // Java Server Page used to display the results.
         request.setAttribute("result", searchresult);
