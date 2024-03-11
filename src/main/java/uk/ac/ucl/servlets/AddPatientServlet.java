@@ -22,33 +22,6 @@ public class AddPatientServlet extends HttpServlet
 {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException
     {
-        // Use the model to do the search and put the results into the request object sent to the
-        // Java Server Page used to display the results.
-        // Retrieve patient details from the form
-        String id = request.getParameter("id");
-        String firstName = request.getParameter("first");
-        String lastName = request.getParameter("last");
-        String dob = request.getParameter("dob");
-        String dod = request.getParameter("dod");
-        String ssn = request.getParameter("ssn");
-        String drivers = request.getParameter("drivers");
-        String passport = request.getParameter("passport");
-        String prefix = request.getParameter("prefix");
-        String suffix = request.getParameter("suffix");
-        String maiden = request.getParameter("maiden");
-        String marital = request.getParameter("marital");
-        String race = request.getParameter("race");
-        String ethnicity = request.getParameter("ethnicity");
-        String birthplace = request.getParameter("birthplace");
-        String address = request.getParameter("address");
-        String city = request.getParameter("city");
-        String state = request.getParameter("state");
-        String zip = request.getParameter("zip");
-
-        // Call the addPatient method in your model to add the new patient
-        Model model = ModelFactory.getModel();
-        model.addPatient(id, firstName, lastName, dob, dod, ssn, drivers, passport, prefix, suffix, maiden, marital, race, ethnicity, birthplace, address, city, state, zip);
-        request.setAttribute("result", "Successfully Added Patient");
         // Invoke the JSP page.
         ServletContext context = getServletContext();
         RequestDispatcher dispatch = context.getRequestDispatcher("/addPatient.jsp");

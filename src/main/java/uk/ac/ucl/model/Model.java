@@ -230,33 +230,46 @@ public class Model {
   }
 
 
-  public void addPatient(String... patientDetails) {
+  public String addPatient(String... patientDetails) {
     // Check if the DataFrame is initialized
-    if (dataFrame == null) {
+    if (this.dataFrame == null) {
       // Handle the case where the DataFrame is not initialized
-      return;
+      return "DataFrame is not initialized.";
     }
 
     // Define column names in the same order as the input fields in the HTML form
     String[] columnNames = {"ID", "FIRST", "LAST", "BIRTHDATE", "DEATHDATE", "SSN", "DRIVERS", "PASSPORT", "PREFIX", "SUFFIX", "MAIDEN", "MARITAL", "RACE", "ETHNICITY", "GENDER", "BIRTHPLACE", "ADDRESS", "CITY", "STATE", "ZIP"};
 
     // Check if the number of patient details matches the number of columns
+    /*
     if (patientDetails.length != columnNames.length) {
       // Handle the case where the number of details does not match
-      return;
+      return patientDetails.length  + " " +columnNames.length +
+              " Number of patient details does not match the number of columns.\n";
     }
+    */
+
 
     // Iterate over each patient detail and add it to the respective column
     for (int i = 0; i < patientDetails.length; i++) {
       String columnName = columnNames[i];
       String patientDetail = patientDetails[i];
-
-      // Assuming you have a method to add a row value to the column
-      Column column = dataFrame.getColumn(columnName);
-      column.addRowValue(patientDetail);
+      //System.out.println("Available column names in DataFrame: " + dataFrame.getColumnNames());
+      if (this.dataFrame.getColumnNames().contains(columnName)) {
+        this.dataFrame.addValue(columnName, patientDetail);
+      }
+        else {
+            return "Column " + columnName + " does not exist in the DataFrame.";
+        }
     }
-    writeFile("data/patients100.csv", dataFrame.toCSV());
+    System.out.println("Added patient details to the DataFrame.");
+
+    // Write the updated DataFrame to the CSV file
+    writeFile("data/patients.csv", this.dataFrame.toCSV());
+
+    return "Successfully added patient.";
   }
+
 
   public void writeFile(String filePath, String content) {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {

@@ -21,6 +21,7 @@
         <input type = "text" name="marital" placeholder="Marital status"/><br>
         <input type = "text" name="race" placeholder = "Race"/><br>
         <input type = "text" name="ethnicity" placeholder = "Ethnicity"/><br>
+        <input type = "text" name="gender" placeholder = "Gender"/><br>
         <input type = "text" name="birthplace" placeholder = "Birthplace"/><br>
         <input type = "text" name="address" placeholder = "Address"/><br>
         <input type = "text" name="city" placeholder = "City"/><br>

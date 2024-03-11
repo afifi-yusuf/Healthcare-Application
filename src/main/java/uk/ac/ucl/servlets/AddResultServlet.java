@@ -46,11 +46,10 @@ public class AddResultServlet extends HttpServlet
 
         // Call the addPatient method in your model to add the new patient
         Model model = ModelFactory.getModel();
-        model.addPatient(id, firstName, lastName, dob, dod, ssn, drivers, passport, prefix, suffix, maiden, marital, race, ethnicity, birthplace, address, city, state, zip);
+        String searchresult = model.addPatient(id, firstName, lastName, dob, dod, ssn, drivers, passport, prefix, suffix, maiden, marital, race, ethnicity, birthplace, address, city, state, zip);
 
         // Java Server Page used to display the results.
-        //String searchResult = model.getPeopleInCity(request.getParameter("searchstring"));
-        request.setAttribute("result", "Successfully Added Patient");
+        request.setAttribute("result", searchresult);
 
         // Invoke the JSP page.
         ServletContext context = getServletContext();

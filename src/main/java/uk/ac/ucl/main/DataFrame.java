@@ -59,20 +59,23 @@ public class DataFrame {
         StringBuilder csv = new StringBuilder();
 
         // Append column names as header
-        for (int i = 0; i < columns.size(); i++) {
-            csv.append(columns.get(i).getName());
-            if (i < columns.size() - 1) {
+        List<String> columnNames = getColumnNames();
+        for (int i = 0; i < columnNames.size(); i++) {
+            csv.append((columnNames.get(i)));
+            if (i < columnNames.size() - 1) {
                 csv.append(",");
             }
         }
         csv.append("\n");
 
         // Append rows
-        int numRows = columns.get(0).getSize();
+        int numRows = getRowCount();
         for (int row = 0; row < numRows; row++) {
-            for (int col = 0; col < columns.size(); col++) {
-                csv.append(columns.get(col).getRowValue(row));
-                if (col < columns.size() - 1) {
+            for (int col = 0; col < columnNames.size(); col++) {
+                String columnName = columnNames.get(col);
+                String cellValue = getValue(columnName, row);
+                csv.append((cellValue));
+                if (col < columnNames.size() - 1) {
                     csv.append(",");
                 }
             }

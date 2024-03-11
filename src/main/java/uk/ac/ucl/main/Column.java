@@ -27,6 +27,8 @@ public class Column {
         }
     }
 
+
+
     public ArrayList<String> getValues() {
         ArrayList<String> values = new ArrayList<>();
         for (int i = 0; i < rows.size(); i++) {
