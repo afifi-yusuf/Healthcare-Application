@@ -164,20 +164,24 @@ public class Model {
     return getPeopleInArea(city, "STATE");
   }
 
-  public String displayPatientDetails(String patientId) {
-    if (this.dataFrame == null) {
-      return "No data available.";
-    }
-
+  public int getIdIndex(String id) {
     // Find the index of the patient with the given ID
     Column idColumn = this.dataFrame.getColumn("ID");
     int rowIndex = -1;
     for (int i = 0; i < idColumn.getSize(); i++) {
-      if (idColumn.getRowValue(i).equals(patientId)) {
+      if (idColumn.getRowValue(i).equals(id)) {
         rowIndex = i;
         break;
       }
     }
+    return rowIndex;
+  }
+
+  public String displayPatientDetails(String patientId) {
+    if (this.dataFrame == null) {
+      return "No data available.";
+    }
+    int rowIndex = getIdIndex(patientId);
 
     if (rowIndex == -1) {
       return "Patient not found.";
@@ -192,7 +196,7 @@ public class Model {
         continue;
       }
       String value = this.dataFrame.getValue(columnName, rowIndex);
-      if (columnName.equals("FIRST")  || columnName.equals("LAST"))
+      if (columnName.equals("FIRST")  || columnName.equals("LAST") || columnName.equals("MAIDEN")) // Remove digits from name columns
         value = removeDigits(value);
       patientDetails.append(columnName).append(": ").append(value).append("<br>");
     }
@@ -237,15 +241,7 @@ public class Model {
       return "No data available.";
     }
 
-    // Find the index of the patient with the given ID
-    Column idColumn = this.dataFrame.getColumn("ID");
-    int rowIndex = -1;
-    for (int i = 0; i < idColumn.getSize(); i++) {
-      if (idColumn.getRowValue(i).equals(patientId)) {
-        rowIndex = i;
-        break;
-      }
-    }
+    int rowIndex = getIdIndex(patientId);
 
     if (rowIndex == -1) {
       return "Patient not found.";
@@ -280,8 +276,6 @@ public class Model {
               " Number of patient details does not match the number of columns.\n";
     }
 
-
-
     // Iterate over each patient detail and add it to the respective column
     for (int i = 0; i < patientDetails.length; i++) {
       String columnName = columnNames[i];
@@ -302,7 +296,6 @@ public class Model {
     return "Successfully added patient.";
   }
 
-
   public void writeFile(String filePath, String content) {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
       writer.write(content);
@@ -310,8 +303,6 @@ public class Model {
       e.printStackTrace();
     }
   }
-
-
 
   // Method to remove digits from a string
   private String removeDigits(String str) {
