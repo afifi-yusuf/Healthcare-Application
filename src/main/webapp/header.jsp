@@ -12,6 +12,8 @@
     <li><a href="searchState.html">Search by State</a></li>
     <li><a href="findOldestPerson.html">Find Oldest Person</a></li>
     <li><a href="addPatient.html">Add Patient</a></li>
+    <li><a href="editPatient.html">Edit Patient Details</a></li>
+    <li><a href="deletePatient.html">Delete a Patient</a></li>
     <li><a href="downloadJSON.html">Download</a></li>
 
     <!-- Add more links as needed -->

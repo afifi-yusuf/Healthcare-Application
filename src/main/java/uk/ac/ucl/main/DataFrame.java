@@ -85,4 +85,11 @@ public class DataFrame {
         return csv.toString();
     }
 
+    public void removeValue(String columnName, int rowIndex) {
+        Column column = columns.get(columnName);
+        if (column == null) {
+            throw new IllegalArgumentException("Column not found: " + columnName);
+        }
+        column.removeRow(rowIndex);
+    }
 }

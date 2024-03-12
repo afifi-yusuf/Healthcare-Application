@@ -48,4 +48,8 @@ public class Column {
     public void addRowValue(String value) {
         rows.add(value);
     }
+
+    public void removeRow(int rowIndex) {
+        rows.remove(rowIndex);
+    }
 }

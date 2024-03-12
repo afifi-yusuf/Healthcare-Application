@@ -232,6 +232,35 @@ public class Model {
     return "Patient not found.";
   }
 
+  public String deletePatient(String patientId) {
+    if (this.dataFrame == null) {
+      return "No data available.";
+    }
+
+    // Find the index of the patient with the given ID
+    Column idColumn = this.dataFrame.getColumn("ID");
+    int rowIndex = -1;
+    for (int i = 0; i < idColumn.getSize(); i++) {
+      if (idColumn.getRowValue(i).equals(patientId)) {
+        rowIndex = i;
+        break;
+      }
+    }
+
+    if (rowIndex == -1) {
+      return "Patient not found.";
+    }
+
+    // Remove the patient details from the DataFrame
+    for (String columnName : this.dataFrame.getColumnNames()) {
+      this.dataFrame.removeValue(columnName, rowIndex);
+    }
+
+    // Write the updated DataFrame to the CSV file
+    writeFile("data/patients.csv", this.dataFrame.toCSV());
+
+    return "Successfully deleted patient.";
+  }
 
   public String addPatient(String... patientDetails) {
     // Check if the DataFrame is initialized
