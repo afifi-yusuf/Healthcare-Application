@@ -7,8 +7,10 @@
 <div class="main">
     <h1>Edit Patient Details</h1>
     <form method="POST" action="/runeditpatient.html">
+        <h2>Enter the ID of the patient you want to edit</h2>
         <input type="text" name="id" placeholder="Enter existing ID"/><br>
         <!-- Input fields for details to be edited -->
+        <h2>Enter the new details</h2>
         <input type="text" name="first" placeholder="First name"/><br>
         <input type="text" name="last" placeholder="Last name"/><br>
         <input type="text" name="dob" placeholder="Date of birth"/><br>
