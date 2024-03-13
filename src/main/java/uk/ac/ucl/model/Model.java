@@ -288,13 +288,63 @@ public class Model {
             return "Column " + columnName + " does not exist in the DataFrame.";
         }
     }
-    System.out.println("Added patient details to the DataFrame.");
+    //System.out.println("Added patient details to the DataFrame.");
 
     // Write the updated DataFrame to the CSV file
     writeFile("data/patients.csv", this.dataFrame.toCSV());
 
     return "Successfully added patient.";
   }
+
+  public String editPatient(String patientId, String... updatedPatientDetails) {
+    // Check if the DataFrame is initialized
+    if (this.dataFrame == null) {
+      // Handle the case where the DataFrame is not initialized
+      return "DataFrame is not initialized.";
+    }
+
+    // Find the index of the patient with the given ID
+    int rowIndex = getIdIndex(patientId);
+
+    if (rowIndex == -1) {
+      return "Patient not found.";
+    }
+
+    // Define column names in the same order as the input fields in the HTML form
+    String[] columnNames = {"FIRST", "LAST", "BIRTHDATE", "DEATHDATE", "SSN", "DRIVERS", "PASSPORT", "PREFIX", "SUFFIX", "MAIDEN", "MARITAL", "RACE", "ETHNICITY", "GENDER", "BIRTHPLACE", "ADDRESS", "CITY", "STATE", "ZIP"};
+
+    // Check if the number of updated patient details matches the number of columns
+    if (updatedPatientDetails.length != columnNames.length) {
+      // Handle the case where the number of details does not match
+      return updatedPatientDetails.length + " " + columnNames.length +
+              " Number of updated patient details does not match the number of columns.\n";
+    }
+
+    // Iterate over each updated patient detail and update it in the respective column
+    for (int i = 0; i < updatedPatientDetails.length; i++) {
+      String columnName = columnNames[i];
+      String updatedDetail = updatedPatientDetails[i];
+
+      // Check if the column exists in the DataFrame
+      if (this.dataFrame.getColumnNames().contains(columnName)) {
+        // Check if the updated detail is not empty
+        if (!updatedDetail.isEmpty()) {
+          this.dataFrame.putValue(columnName, rowIndex, updatedDetail);
+        }
+      } else {
+        return "Column " + columnName + " does not exist in the DataFrame.";
+      }
+    }
+
+
+    //System.out.println("Updated patient details in the DataFrame.");
+
+    // Write the updated DataFrame to the CSV file
+    writeFile("data/patients.csv", this.dataFrame.toCSV());
+
+    return "Successfully edited patient details.";
+  }
+
 
   public void writeFile(String filePath, String content) {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {

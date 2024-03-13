@@ -3,7 +3,7 @@
 <jsp:include page="/header.jsp"/>
 <html>
 <head>
-    <title>Add Patient</title>
+    <title>Edit Patient</title>
 </head>
 <body>
 <div class="main">
