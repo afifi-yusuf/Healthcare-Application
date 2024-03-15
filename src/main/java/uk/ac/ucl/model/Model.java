@@ -1,18 +1,24 @@
 package uk.ac.ucl.model;
 
+import java.awt.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
+import java.util.*;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import uk.ac.ucl.main.Column;
 import uk.ac.ucl.main.DataFrame;
 import uk.ac.ucl.main.DataLoader;
+import java.awt.image.BufferedImage;
+import java.util.List;
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.stream.Collectors;
 
 public class Model {
   private DataFrame dataFrame;
@@ -344,6 +350,138 @@ public class Model {
 
     return "Successfully edited patient details.";
   }
+
+  public void createAgeDistributionGraph(String filePath) {
+    List<String> birthDateValues = this.dataFrame.getColumn("BIRTHDATE").getValues();
+    List<String> deathDateValues = this.dataFrame.getColumn("DEATHDATE").getValues();
+
+    int[] ageCounts = new int[111]; // Array to store count of each age (0-110)
+
+    // Calculate age for each entry
+    for (int i = 0; i < birthDateValues.size(); i++) {
+      String birthDateString = birthDateValues.get(i);
+      String deathDateString = deathDateValues.get(i);
+
+      if (birthDateString != null && (deathDateString == null || deathDateString.isEmpty())) {
+        LocalDate birthDate = LocalDate.parse(birthDateString);
+        LocalDate currentDate = LocalDate.now();
+
+        int age = calculateAge(birthDate, currentDate);
+        if (age >= 0 && age <= 110) {
+          ageCounts[age]++;
+        }
+      }
+    }
+
+    // Create a buffered image to draw the graph
+    int graphWidth = 1500;
+    int graphHeight = 400;
+    BufferedImage image = new BufferedImage(graphWidth, graphHeight + 200, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = image.createGraphics();
+
+    // Draw background
+    g2d.setColor(Color.WHITE);
+    g2d.fillRect(0, 0, graphWidth, graphHeight);
+
+    // Draw axis titles
+    g2d.setColor(Color.BLACK);
+    Font axisTitleFont = new Font("Arial", Font.BOLD, 14);
+    g2d.setFont(axisTitleFont);
+    g2d.drawString("Age", 730, 440); // Adjusted position for "Age"
+    g2d.drawString("Frequency", 10, 270); // Adjusted position for "Frequency"
+
+    // Draw bars for each age group
+    int barWidth = 20;
+    int barSpacing = 2;
+    int x = 50; // Starting x-coordinate
+    int maxCount = getMaxCount(ageCounts); // Find the maximum count for scaling
+    for (int age = 0; age <= 110; age++) {
+      if (ageCounts[age] == 0) {
+        continue;
+      }
+      int barHeight = (int) (ageCounts[age] / (double) maxCount * (graphHeight - 100));
+      g2d.setColor(Color.BLUE);
+      g2d.fillRect(x, graphHeight - barHeight, barWidth, barHeight);
+      // Label the bars with age
+      g2d.drawString(Integer.toString(age), x, graphHeight + 15); // Adjusted position for labels
+      x += barWidth + barSpacing;
+    }
+
+    // Save the graph as an image file
+    try {
+      ImageIO.write(image, "PNG", new File(filePath));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    // Clean up resources
+    g2d.dispose();
+  }
+
+
+  private int calculateAge(LocalDate birthDate, LocalDate currentDate) {
+    return currentDate.getYear() - birthDate.getYear();
+  }
+
+  private int getMaxCount(int[] counts) {
+    int max = Integer.MIN_VALUE;
+    for (int count : counts) {
+      if (count > max) {
+        max = count;
+      }
+    }
+    return max;
+  }
+  public void createGenderDistributionPieChart(String filePath) {
+    List<String> genderValues = this.dataFrame.getColumn("GENDER").getValues();
+
+    // Filter out null, empty, and non-"M"/"F" values
+    genderValues = genderValues.stream()
+            .filter(gender -> gender != null && !gender.isEmpty() && (gender.equals("M") || gender.equals("F")))
+            .toList();
+
+    // Count occurrences of each gender
+    Map<String, Integer> genderCounts = new HashMap<>();
+    for (String gender : genderValues) {
+      genderCounts.put(gender, genderCounts.getOrDefault(gender, 0) + 1);
+    }
+
+    // Create a buffered image to draw the pie chart
+    int graphWidth = 800;
+    int graphHeight = 600;
+    BufferedImage image = new BufferedImage(1000, 800, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = image.createGraphics();
+
+    // Draw background
+    g2d.setColor(Color.WHITE);
+    g2d.fillRect(0, 0, graphWidth, graphHeight);
+
+    // Calculate the total count of valid gender values ("M" and "F")
+    double totalCount = genderCounts.values().stream().mapToInt(Integer::intValue).sum();
+
+    // Draw the pie chart
+    double startAngle = 0;
+    for (Map.Entry<String, Integer> entry : genderCounts.entrySet()) {
+      double angle = (entry.getValue() / totalCount) * 360;
+      Color lightBlue = new Color(0xAD, 0xD8, 0xE6);
+      Color color = entry.getKey().equals("M") ? lightBlue : Color.PINK; // Assign color based on gender
+      g2d.setColor(color);
+      g2d.fillArc(100, 100, 400, 400, (int) startAngle, (int) angle);
+      startAngle += angle;
+    }
+
+    // Save the pie chart as an image file
+    try {
+      ImageIO.write(image, "PNG", new File(filePath));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    // Clean up resources
+    g2d.dispose();
+  }
+
+
 
 
   public void writeFile(String filePath, String content) {
