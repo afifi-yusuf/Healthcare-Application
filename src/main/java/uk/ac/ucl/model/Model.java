@@ -73,7 +73,7 @@ public class Model {
 
     return searchResults;
   }
-  public String findOldestPerson() {
+  private String findExtremePerson(boolean isOldest) {
     if (this.dataFrame == null) {
       return "No data available.";
     }
@@ -88,8 +88,8 @@ public class Model {
     }
 
     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    Date oldestBirthDate = null;
-    String oldestPersonName = "";
+    Date extremeBirthDate = null;
+    String extremePersonName = "";
 
     for (int i = 0; i < birthdateColumn.getSize(); i++) {
       try {
@@ -101,9 +101,10 @@ public class Model {
         String firstName = removeDigits(firstNameColumn.getRowValue(i));
         String lastName = removeDigits(lastNameColumn.getRowValue(i));
 
-        if (oldestBirthDate == null || birthDate.before(oldestBirthDate)) {
-          oldestBirthDate = birthDate;
-          oldestPersonName = firstName + " " + lastName;
+        if ((isOldest && (extremeBirthDate == null || birthDate.before(extremeBirthDate))) ||
+                (!isOldest && (extremeBirthDate == null || birthDate.after(extremeBirthDate)))) {
+          extremeBirthDate = birthDate;
+          extremePersonName = firstName + " " + lastName;
         }
       } catch (ParseException e) {
         // Handle parsing exception
@@ -112,20 +113,34 @@ public class Model {
     }
 
     // Calculate age based on birthdate
-    if (oldestBirthDate != null) {
-      Calendar birthCalendar = Calendar.getInstance();
-      birthCalendar.setTime(oldestBirthDate);
-      Calendar currentCalendar = Calendar.getInstance();
-      int age = currentCalendar.get(Calendar.YEAR) - birthCalendar.get(Calendar.YEAR);
-      if (currentCalendar.get(Calendar.DAY_OF_YEAR) < birthCalendar.get(Calendar.DAY_OF_YEAR)) {
-        age--;
-      }
-
-      return oldestPersonName + " is the oldest person, born on " + dateFormat.format(oldestBirthDate) + ", and is " + age + " years old.";
+    if (extremeBirthDate != null) {
+      int age = calculateAge(extremeBirthDate);
+      String description = isOldest ? "oldest" : "youngest";
+      return extremePersonName + " is the " + description + " person, born on " + dateFormat.format(extremeBirthDate) + ", and is " + age + " years old.";
     } else {
       return "No living person found in the dataset.";
     }
   }
+  private int calculateAge(Date birthDate) {
+    Calendar birthCalendar = Calendar.getInstance();
+    birthCalendar.setTime(birthDate);
+    Calendar currentCalendar = Calendar.getInstance();
+    int age = currentCalendar.get(Calendar.YEAR) - birthCalendar.get(Calendar.YEAR);
+    if (currentCalendar.get(Calendar.DAY_OF_YEAR) < birthCalendar.get(Calendar.DAY_OF_YEAR)) {
+      age--;
+    }
+    return age;
+  }
+
+  public String findOldestPerson() {
+    return findExtremePerson(true);
+  }
+
+  public String findYoungestPerson() {
+    return findExtremePerson(false);
+  }
+
+
 
   public String getPeopleInArea(String area, String type){
     if (this.dataFrame == null) {
