@@ -481,7 +481,64 @@ public class Model {
     g2d.dispose();
   }
 
+  public void createEthnicityDistributionGraph(String filePath) {
+    List<String> ethnicityValues = this.dataFrame.getColumn("ETHNICITY").getValues();
 
+    // Initialize counts for each ethnicity
+    Map<String, Integer> ethnicityCounts = new HashMap<>();
+    for (String ethnicity : ethnicityValues) {
+      if (!ethnicity.isEmpty()) {
+        ethnicityCounts.put(ethnicity, ethnicityCounts.getOrDefault(ethnicity, 0) + 1);
+      }
+    }
+
+    // Create a buffered image to draw the graph
+    int graphWidth = 1500;
+    int graphHeight = 400;
+    BufferedImage image = new BufferedImage(graphWidth, graphHeight + 200, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2d = image.createGraphics();
+
+    // Draw background
+    g2d.setColor(Color.WHITE);
+    g2d.fillRect(0, 0, graphWidth, graphHeight);
+
+    // Draw axis titles
+    g2d.setColor(Color.BLACK);
+    Font axisTitleFont = new Font("Arial", Font.BOLD, 14);
+    g2d.setFont(axisTitleFont);
+    g2d.drawString("Ethnicity", 740, 450); // Adjusted position for "Ethnicity"
+    g2d.drawString("Frequency", 10, 250); // Adjusted position for "Frequency"
+
+    // Draw bars for each ethnicity
+    int barWidth = 65;
+    int barSpacing = 15;
+    int x = 50; // Starting x-coordinate
+    int maxCount = Collections.max(ethnicityCounts.values()); // Find the maximum count for scaling
+    for (Map.Entry<String, Integer> entry : ethnicityCounts.entrySet()) {
+      String ethnicity = entry.getKey();
+      int count = entry.getValue();
+      int barHeight = (int) (count / (double) maxCount * (graphHeight - 100));
+      g2d.setColor(Color.BLUE); // You can adjust the color based on ethnicity if needed
+      g2d.fillRect(x, graphHeight - barHeight, barWidth, barHeight);
+      // Label the bars with ethnicity
+      String[] parts = ethnicity.split("_");
+      String firstPart = parts[0]; // First part of the ethnicity
+      String secondPart = parts.length > 1 ? parts[1] : ""; // Second part (if available)
+      g2d.drawString(firstPart, x, graphHeight + 15); // Draw first part
+      g2d.drawString(secondPart, x, graphHeight + 30); // Draw second part (if available)
+      x += barWidth + barSpacing;
+    }
+
+    // Save the graph as an image file
+    try {
+      ImageIO.write(image, "PNG", new File(filePath));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+    // Clean up resources
+    g2d.dispose();
+  }
 
 
   public void writeFile(String filePath, String content) {
