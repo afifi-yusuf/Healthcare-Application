@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 public class AgeGraphServlet extends BaseGraphServlet {
     @Override
     protected void createGraph(Model model) {
-        model.createAgeDistributionGraph("/Users/yusufafifi/Desktop/OOP/OOP_Coursework/src/main/webapp/images/ageDistribution.png");
+        model.createAgeDistributionGraph("src/main/webapp/images/ageDistribution.png");
     }
 
     @Override
