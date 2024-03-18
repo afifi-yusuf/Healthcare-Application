@@ -142,48 +142,58 @@ public class Model {
 
 
 
-  public String getPeopleInArea(String area, String type){
+
+
+
+  public String getPeopleByAttribute(String attribute, String type) {
     if (this.dataFrame == null) {
       return "No data available.";
     }
 
-    Column areaColumn = this.dataFrame.getColumn(type);
+    Column searchColumn = this.dataFrame.getColumn(type);
     Column firstNameColumn = this.dataFrame.getColumn("FIRST");
     Column lastNameColumn = this.dataFrame.getColumn("LAST");
 
-    if (areaColumn == null || firstNameColumn == null || lastNameColumn == null) {
+    if (searchColumn == null || firstNameColumn == null || lastNameColumn == null) {
       return "One or more required columns not found.";
     }
 
-    List<String> peopleInArea = new ArrayList<>();
+    List<String> peopleMatchingAttribute = new ArrayList<>();
     int count = 0;
 
-    for (int i = 0; i < areaColumn.getSize(); i++) {
-      String areaName = areaColumn.getRowValue(i);
-      if (areaName != null && areaName.equalsIgnoreCase(area)) {
+    for (int i = 0; i < searchColumn.getSize(); i++) {
+      String searchValue = searchColumn.getRowValue(i);
+      if (searchValue != null && searchValue.equalsIgnoreCase(attribute)) {
         String firstName = removeDigits(firstNameColumn.getRowValue(i));
         String lastName = removeDigits(lastNameColumn.getRowValue(i));
-        peopleInArea.add(firstName + " " + lastName);
+        peopleMatchingAttribute.add(firstName + " " + lastName);
         count++;
       }
     }
 
     StringBuilder result = new StringBuilder();
-    result.append("Number of people living in ").append(area).append(": ").append(count).append("<br>");
+    result.append("Number of people with ").append(type).append(" '").append(attribute).append("': ").append(count).append("<br>");
+
     result.append("List of people: <br>");
-    for (String person : peopleInArea) {
+    for (String person : peopleMatchingAttribute) {
       result.append(person).append("<br>");
     }
 
     return result.toString();
   }
 
+
   public String getPeopleInCity(String city) {
-    return getPeopleInArea(city, "CITY");
+    return getPeopleByAttribute(city, "CITY");
   }
-  public String getPeopleInState(String city) {
-    return getPeopleInArea(city, "STATE");
+  public String getPeopleInState(String state) {
+    return getPeopleByAttribute(state, "STATE");
   }
+
+  public String getPeopleInEthnicity(String ethnicity){
+    return getPeopleByAttribute(ethnicity, "ETHNICITY");
+  }
+
 
   public int getIdIndex(String id) {
     // Find the index of the patient with the given ID

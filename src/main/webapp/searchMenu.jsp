@@ -12,6 +12,7 @@
         <li><a href="search.html">Search by Keyword</a></li>
         <li><a href="searchCity.html">Search by City</a></li>
         <li><a href="searchState.html">Search by State</a></li>
+        <li><a href="searchEthnicity.html">Search by Ethnicity</a></li>
 
     </ul>
 </nav>
