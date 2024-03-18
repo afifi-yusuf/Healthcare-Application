@@ -194,7 +194,6 @@ public class Model {
     return getPeopleByAttribute(ethnicity, "ETHNICITY");
   }
 
-
   public int getIdIndex(String id) {
     // Find the index of the patient with the given ID
     Column idColumn = this.dataFrame.getColumn("ID");

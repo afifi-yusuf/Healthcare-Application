@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 public class GenderGraphServlet extends BaseGraphServlet {
     @Override
     protected void createGraph(Model model) {
-        model.createGenderDistributionPieChart("/Users/yusufafifi/Desktop/OOP/OOP_Coursework/src/main/webapp/images/genderDistribution.png");
+        model.createGenderDistributionPieChart("webapp/images/genderDistribution.png");
     }
 
     @Override

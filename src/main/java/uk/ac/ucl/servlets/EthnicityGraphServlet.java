@@ -8,7 +8,7 @@ import javax.servlet.annotation.WebServlet;
 public class EthnicityGraphServlet extends BaseGraphServlet {
     @Override
     protected void createGraph(Model model) {
-        model.createEthnicityDistributionGraph("/Users/yusufafifi/Desktop/OOP/OOP_Coursework/src/main/webapp/images/ethnicityDistribution.png");
+        model.createEthnicityDistributionGraph("webapp/images/ethnicityDistribution.png");
     }
 
     @Override
