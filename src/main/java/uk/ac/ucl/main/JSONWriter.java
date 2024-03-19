@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class JSONWriter {
+    //Method to create formatted JSON file from DataFrame
     public static void writeDataFrameToJSON(DataFrame dataFrame, String fileName) {
         try (FileWriter fileWriter = new FileWriter(fileName)) {
             StringBuilder json = new StringBuilder();

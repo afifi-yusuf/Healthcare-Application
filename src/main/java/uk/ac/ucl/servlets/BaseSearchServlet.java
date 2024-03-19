@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+//Abstract class for searching
 @WebServlet("/baseSearch.html")
 public abstract class BaseSearchServlet extends HttpServlet {
     protected abstract String getSearchResult(HttpServletRequest request) throws IOException;

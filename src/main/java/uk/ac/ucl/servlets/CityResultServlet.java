@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
+//Servlet for searching for people in a city
 @WebServlet("/runcitysearch.html")
 public class CityResultServlet extends BaseSearchServlet {
     @Override

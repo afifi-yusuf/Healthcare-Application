@@ -3,7 +3,7 @@ package uk.ac.ucl.servlets;
 import uk.ac.ucl.model.Model;
 
 import javax.servlet.annotation.WebServlet;
-
+//Servlet for creating ethnicity distribution graph
 @WebServlet("/ethnicitygraph.html")
 public class EthnicityGraphServlet extends BaseGraphServlet {
     @Override

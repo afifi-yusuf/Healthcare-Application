@@ -5,7 +5,7 @@ import uk.ac.ucl.model.ModelFactory;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-
+//Servley for searching for people in a state
 @WebServlet("/runstatesearch.html")
 public class StateResultServlet extends BaseSearchServlet {
     @Override

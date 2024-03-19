@@ -58,6 +58,8 @@ public class Model {
     return data;
   }
 
+
+  //search by ketword
   public List<String> searchFor(String keyword) {
     List<String> searchResults = new ArrayList<>();
 
@@ -73,6 +75,8 @@ public class Model {
 
     return searchResults;
   }
+
+  //will later be used for youngest and oldest
   private String findExtremePerson(boolean isOldest) {
     if (this.dataFrame == null) {
       return "No data available.";
@@ -139,10 +143,6 @@ public class Model {
   public String findYoungestPerson() {
     return findExtremePerson(false);
   }
-
-
-
-
 
 
   public String getPeopleByAttribute(String attribute, String type) {
@@ -375,6 +375,8 @@ public class Model {
     return "Successfully edited patient details.";
   }
 
+
+  //graphs created using java.awt.Graphics2D
   public void createAgeDistributionGraph(String filePath) {
     List<String> birthDateValues = this.dataFrame.getColumn("BIRTHDATE").getValues();
     List<String> deathDateValues = this.dataFrame.getColumn("DEATHDATE").getValues();
@@ -385,12 +387,13 @@ public class Model {
     for (int i = 0; i < birthDateValues.size(); i++) {
       String birthDateString = birthDateValues.get(i);
       String deathDateString = deathDateValues.get(i);
+      if(birthDateString == null || birthDateString.isEmpty()) continue;
 
-      if (birthDateString != null && (deathDateString == null || deathDateString.isEmpty())) {
+      if (deathDateString == null || deathDateString.isEmpty()) {
         LocalDate birthDate = LocalDate.parse(birthDateString);
         LocalDate currentDate = LocalDate.now();
 
-        int age = calculateAge(birthDate, currentDate);
+        int age = currentDate.getYear() - birthDate.getYear();
         if (age >= 0 && age <= 110) {
           ageCounts[age]++;
         }
@@ -443,10 +446,7 @@ public class Model {
   }
 
 
-  private int calculateAge(LocalDate birthDate, LocalDate currentDate) {
-    return currentDate.getYear() - birthDate.getYear();
-  }
-
+  //helper function for creating charts
   private int getMaxCount(int[] counts) {
     int max = Integer.MIN_VALUE;
     for (int count : counts) {
@@ -456,6 +456,7 @@ public class Model {
     }
     return max;
   }
+
   public void createGenderDistributionPieChart(String filePath) {
     List<String> genderValues = this.dataFrame.getColumn("GENDER").getValues();
 

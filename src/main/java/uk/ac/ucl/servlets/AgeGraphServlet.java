@@ -3,7 +3,7 @@ package uk.ac.ucl.servlets;
 import uk.ac.ucl.model.Model;
 
 import javax.servlet.annotation.WebServlet;
-
+//Servlet for age graph page
 @WebServlet("/agegraph.html")
 public class AgeGraphServlet extends BaseGraphServlet {
     @Override

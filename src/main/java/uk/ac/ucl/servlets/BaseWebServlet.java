@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+//Abstract class for servlets that display a JSP page
 @WebServlet("/base")
 public abstract class BaseWebServlet extends HttpServlet {
     protected abstract String getJspPath();

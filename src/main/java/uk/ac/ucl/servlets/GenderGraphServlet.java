@@ -3,7 +3,7 @@ package uk.ac.ucl.servlets;
 import uk.ac.ucl.model.Model;
 
 import javax.servlet.annotation.WebServlet;
-
+//Servlet for creating gender distribution graph
 @WebServlet("/gendergraph.html")
 public class GenderGraphServlet extends BaseGraphServlet {
     @Override

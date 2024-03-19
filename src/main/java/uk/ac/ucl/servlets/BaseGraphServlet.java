@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+//Abstract class for creating a graph
 @WebServlet("/baseGraph.html")
 public abstract class BaseGraphServlet extends HttpServlet {
     protected abstract void createGraph(Model model);

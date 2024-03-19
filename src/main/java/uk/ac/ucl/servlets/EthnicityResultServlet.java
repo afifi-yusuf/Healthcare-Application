@@ -5,7 +5,7 @@ import uk.ac.ucl.model.ModelFactory;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-
+//Servlet for searching for ethnicity
 @WebServlet("/runethnicitysearch.html")
 public class EthnicityResultServlet extends BaseSearchServlet {
     @Override
